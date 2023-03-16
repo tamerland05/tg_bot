@@ -13,7 +13,7 @@ keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
 
 def get_weather(lat, lon):
     WEATHER_PARAMS = {
-        'applid': WEATHER_TOKEN,
+        'appid': WEATHER_TOKEN,
         'lat': lat,
         'lon': lon,
         'units': 'metric',
@@ -23,7 +23,7 @@ def get_weather(lat, lon):
     print(response)
     message = f'Weather in {response["name"]}'
     message += f'\nTemperature is {response["main"]["temp"]}'
-    message += f'\nTemperature fells like {response["main"]["fells_like"]}'
+    message += f'\nTemperature fells like {response["main"]["feels_like"]}'
     message += f'\n {response["cod"]} {response["weather"]["description"]}'
     return message
 

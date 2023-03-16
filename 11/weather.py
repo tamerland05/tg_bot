@@ -8,10 +8,8 @@ WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather'
 WEATHER_TOKEN = '7e147060eeebf48a839c58e50667b967'
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
-keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
 
-
-def get_weather(lat, lon):
+def get_weather(lon, lat):
     WEATHER_PARAMS = {
         'appid': WEATHER_TOKEN,
         'lat': lat,
@@ -20,16 +18,16 @@ def get_weather(lat, lon):
         'lang': 'ru'
     }
     response = json.loads(requests.get(WEATHER_URL, params=WEATHER_PARAMS).text)
-    print(response)
     message = f'Weather in {response["name"]}'
     message += f'\nTemperature is {response["main"]["temp"]}'
     message += f'\nTemperature fells like {response["main"]["feels_like"]}'
-    message += f'\n {response["cod"]} {response["weather"]["description"]}'
+    message += f'\nPrecipitation {response["cod"]}, {response["weather"][0]["description"]}'
     return message
 
 
 @bot.message_handler(commands=['start', 'help'])
 def start(message):
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(KeyboardButton('Get weather', request_location=True))
     keyboard.add(KeyboardButton('About'))
     bot.send_message(message.chat.id, 'Hello! I am simple weather bot!', reply_markup=keyboard)
